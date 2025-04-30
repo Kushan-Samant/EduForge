@@ -1,0 +1,711 @@
+             <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduForge AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(180deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+        .navbar {
+            width: 100%;
+            background: rgba(44,62,80,0.98);
+            color: #fff;
+            padding: 18px 0;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+        }
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px 60px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        }
+        .title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 36px;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .feature-btn {
+            flex: 1;
+            background: #fff;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            padding: 40px 10px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.13);
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 500;
+            outline: none;
+            text-decoration: none;
+        }
+        .feature-btn:focus {
+            box-shadow: 0 0 0 3px #3498db55;
+        }
+        .feature-btn:hover {
+            background: #f8f9fa;
+            box-shadow: 0px 8px 24px rgba(44,62,80,0.18);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .feature-icon {
+            font-size: 2.2rem;
+            margin-bottom: 18px;
+        }
+        /* Test Generator Styles */
+        .paper {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(44,62,80,0.13);
+            padding: 0 0 36px 0;
+            margin-top: 32px;
+            position: relative;
+            min-height: 500px;
+            overflow: hidden;
+        }
+        .paper-header {
+            background: #d0e7fa;
+            border-radius: 18px 18px 0 0;
+            padding: 32px 36px 18px 36px;
+            border-bottom: 2px solid #3498db33;
+            position: relative;
+        }
+        .paper-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #217dbb;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .paper-meta {
+            color: #555;
+            font-size: 1.08rem;
+            margin-bottom: 8px;
+        }
+        .student-info {
+            margin-top: 18px;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .student-info label {
+            font-weight: 500;
+            color: #217dbb;
+            margin-right: 8px;
+        }
+        .student-info input {
+            border: none;
+            border-bottom: 1.5px solid #3498db;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 2px 6px;
+            outline: none;
+            width: 180px;
+        }
+        .test-paper-content {
+            padding: 36px 36px 24px 36px;
+        }
+        .question-block {
+            margin-bottom: 38px;
+            padding-bottom: 18px;
+            border-bottom: 1px dashed #b3d6f2;
+        }
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.13rem;
+        }
+        .answer-area {
+            width: 100%;
+            min-height: 70px;
+            border-radius: 8px;
+            border: 1.5px solid #b3d6f2;
+            background: #f4faff;
+            padding: 12px;
+            font-size: 1rem;
+            margin-top: 6px;
+            resize: vertical;
+            transition: border 0.2s;
+        }
+        .answer-area:focus {
+            border: 1.5px solid #3498db;
+            background: #eaf4fb;
+        }
+        .submit-btn {
+            margin-top: 18px;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #3498db 0%, #217dbb 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #3498db22;
+        }
+        .submit-btn:hover { background: linear-gradient(90deg, #217dbb 0%, #3498db 100%); }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: -90px;
+            transform: rotate(-90deg) translateY(-50%);
+            opacity: 0.10;
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #3498db;
+            pointer-events: none;
+            user-select: none;
+            letter-spacing: 2px;
+            z-index: 1;
+        }
+        .warning {
+            color: #e74c3c;
+            background: #fff3f3;
+            border: 1px solid #e74c3c44;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+        /* Chat Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(44,62,80,0.45);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .chat-window {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            width: 400px;
+            max-width: 95vw;
+            height: 540px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .chat-header {
+            background: #3498db;
+            color: #fff;
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 18px 16px;
+            overflow-y: auto;
+            background: #f4f8fb;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .chat-message.user {
+            align-self: flex-end;
+            background: #3498db;
+            color: #fff;
+        }
+        .chat-message.ai {
+            align-self: flex-start;
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+        .chat-input-area {
+            display: flex;
+            border-top: 1px solid #e0e0e0;
+            background: #fff;
+        }
+        .chat-input {
+            flex: 1;
+            border: none;
+            padding: 16px;
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+        }
+        .chat-send {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            padding: 0 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chat-send:hover {
+            background: #217dbb;
+        }
+        /* Helper Bubble */
+        .helper-bubble {
+            display: none !important;
+        }
+        /* Remove helper modal styles if present */
+        #helperModal, #helperIcon {
+            display: none !important;
+        }
+        /* (Keep rest of your styles unchanged) */
+        @media (max-width: 600px) {
+            .helper-bubble {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        EduForge AI &mdash; Your Smart Study Companion
+    </div>
+    <div class="container" id="mainContainer">
+        <div class="title">EduForge AI</div>
+        <div class="subtitle">Empowering students with AI-driven tools for test generation, doubt solving, and performance evaluation.</div>
+        <div class="features">
+            <a href="#" class="feature-btn" aria-label="Generate Test" id="showTestGenBtn">
+                <span class="feature-icon">📝</span>
+                Generate Test
+            </a>
+            <a href="#" class="feature-btn" aria-label="Solve Doubts" id="solveDoubtsBtn">
+                <span class="feature-icon">❓</span>
+                Solve Doubts
+            </a>
+            <a href="#" class="feature-btn" aria-label="Evaluate Answers" id="showTestGenBtn2">
+                <span class="feature-icon">📊</span>
+                Evaluate Answers
+            </a>
+        </div>
+        <!-- Test Generator Paper (hidden by default, shown on click) -->
+        <div class="paper" id="testGenPaper" style="display:none;">
+            <div class="watermark">EduForge AI</div>
+            <div class="paper-header">
+                <div class="paper-title">IGCSE Test Paper</div>
+                <div class="paper-meta" id="paperMeta"></div>
+                <form class="student-info" id="studentInfoForm" autocomplete="off" onsubmit="return false;">
+                    <label for="studentName">Name:</label>
+                    <input type="text" id="studentName" name="studentName" placeholder="Enter your name" required>
+                </form>
+            </div>
+            <div class="test-paper-content" id="testPaperContent">
+                <form id="testForm" autocomplete="off">
+                    <label for="subject">Subject</label>
+                    <select id="subject" required>
+                        <option value="">Select subject...</option>
+                        <option value="Physics (Core/Extended)">Physics (Core/Extended)</option>
+                        <option value="Chemistry (Core/Extended)">Chemistry (Core/Extended)</option>
+                        <option value="Mathematics (Core/Extended)">Mathematics (Core/Extended)</option>
+                    </select>
+                    <div id="topicSection" class="hidden">
+                        <label for="topic">Topic</label>
+                        <select id="topic" required>
+                            <option value="">Select topic...</option>
+                        </select>
+                    </div>
+                    <label for="difficulty">Difficulty</label>
+                    <select id="difficulty" required>
+                        <option value="Simple">Simple</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                    <label for="numQuestions">Number of Questions</label>
+                    <input type="number" id="numQuestions" min="1" max="40" value="5" required />
+                    <label for="totalMarks">Total Marks</label>
+                    <input type="number" id="totalMarks" min="10" max="200" value="25" required />
+                    <div id="warningBox" class="warning" style="display:none;"></div>
+                    <button type="submit" class="submit-btn">Generate Test Paper</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Chat Modal -->
+    <div class="modal" id="chatModal" aria-modal="true" role="dialog">
+        <div class="chat-window">
+            <div class="chat-header">
+                AI Doubt Solver
+                <button class="chat-close" id="closeChatBtn" aria-label="Close chat">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message ai">Hi! Ask me any study doubt and I'll do my best to help you.</div>
+            </div>
+            <form class="chat-input-area" id="chatForm" autocomplete="off">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your question..." aria-label="Type your question" required />
+                <button type="submit" class="chat-send">Send</button>
+            </form>
+        </div>
+    </div>
+    <!-- Floating Helper Icon -->
+    <div id="helperIcon" class="helper-bubble" tabindex="0" aria-label="Open website helper">helper</div>
+    <!-- Helper Modal -->
+    <div class="modal" id="helperModal" aria-modal="true" role="dialog">
+        <div class="chat-window">
+            <div class="chat-header">
+                Website Helper
+                <button class="chat-close" id="closeHelperBtn" aria-label="Close helper chat">&times;</button>
+            </div>
+            <div class="chat-messages" id="helperMessages">
+                <div class="chat-message ai">Hi! I'm your website helper. Ask me anything about how to use this site.</div>
+            </div>
+            <form class="chat-input-area" id="helperForm" autocomplete="off">
+                <input type="text" class="chat-input" id="helperInput" placeholder="How does this site work?" aria-label="Type your question" required />
+                <button type="submit" class="chat-send">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Show/hide test generator
+        const showTestGenBtn = document.getElementById('showTestGenBtn');
+        const showTestGenBtn2 = document.getElementById('showTestGenBtn2');
+        const testGenPaper = document.getElementById('testGenPaper');
+        showTestGenBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            testGenPaper.style.display = 'block';
+            window.scrollTo({ top: testGenPaper.offsetTop, behavior: "smooth" });
+        });
+        showTestGenBtn2.addEventListener('click', function(e) {
+            e.preventDefault();
+            testGenPaper.style.display = 'block';
+            window.scrollTo({ top: testGenPaper.offsetTop, behavior: "smooth" });
+        });
+
+        // All topics for each subject
+        const topics = {
+            "Physics (Core/Extended)": [
+                "Mechanics", "Electricity", "Magnetism", "Thermodynamics", "Waves", "Optics",
+                "Motion", "Forces", "Energy", "Work and Power", "Fluid Mechanics",
+                "Heat Transfer", "Sound", "Light", "Electromagnetic Spectrum",
+                "Nuclear Physics", "Radioactivity", "Forces and Fields", "Electric Circuits",
+                "Magnetic Fields and Forces"
+            ],
+            "Chemistry (Core/Extended)": [
+                "Atoms and Molecules", "Chemical Reactions", "Acids and Bases",
+                "Periodic Table", "Stoichiometry", "Atomic Structure", "Bonding",
+                "Energetics", "Chemical Kinetics", "Equilibria", "Organic Chemistry",
+                "Acid-Base Equilibria", "Redox Reactions", "Electrochemistry",
+                "Chemical Analysis", "Environmental Chemistry", "Industrial Chemistry"
+            ],
+            "Mathematics (Core/Extended)": [
+                "Algebra", "Geometry", "Trigonometry", "Statistics", "Probability",
+                "Linear Equations", "Simultaneous Equations", "Quadratic Equations",
+                "Inequalities", "Polynomials", "Rational Expressions", "Exponents",
+                "Logarithms", "Functions", "Graphs of Functions", "Coordinate Geometry",
+                "Vectors", "Matrices", "Sequences and Series"
+            ]
+        };
+
+        const subjectSelect = document.getElementById('subject');
+        const topicSection = document.getElementById('topicSection');
+        const topicSelect = document.getElementById('topic');
+        const paperMeta = document.getElementById('paperMeta');
+        const testPaperContent = document.getElementById('testPaperContent');
+        const studentInfoForm = document.getElementById('studentInfoForm');
+        const studentNameInput = document.getElementById('studentName');
+        const warningBox = document.getElementById('warningBox');
+        const numQuestionsInput = document.getElementById('numQuestions');
+        const totalMarksInput = document.getElementById('totalMarks');
+
+        subjectSelect.addEventListener('change', function() {
+            const selected = subjectSelect.value;
+            if (topics[selected]) {
+                topicSelect.innerHTML = '<option value="">Select topic...</option>' +
+                    topics[selected].map(t => `<option value="${t}">${t}</option>`).join('');
+                topicSection.classList.remove('hidden');
+            } else {
+                topicSection.classList.add('hidden');
+                topicSelect.innerHTML = '';
+            }
+        });
+
+        // Validation for marks/questions ratio and limits
+        function validateInputs() {
+            const numQuestions = parseInt(numQuestionsInput.value, 10);
+            const totalMarks = parseInt(totalMarksInput.value, 10);
+            let warning = "";
+            if (numQuestions > 40) warning = "Maximum 40 questions allowed.";
+            else if (totalMarks > 200) warning = "Maximum 200 marks allowed.";
+            else if (numQuestions < 1) warning = "At least 1 question required.";
+            else if (totalMarks < 20) warning = "Minimum 20 marks required.";
+            else if (totalMarks / numQuestions < 1) warning = "Each question must be worth at least 1 mark.";
+            else if (totalMarks / numQuestions > 5) warning = "Each question should be worth no more than 5 marks. Please adjust the number of questions or total marks.";
+            warningBox.style.display = warning ? "block" : "none";
+            warningBox.textContent = warning;
+            return !warning;
+        }
+        numQuestionsInput.addEventListener('input', validateInputs);
+        totalMarksInput.addEventListener('input', validateInputs);
+
+        // Test Generator AI Integration
+        const API_KEY = "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";
+        const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        const SYSTEM_PROMPT = "You are an expert IGCSE exam setter with years of experience in creating high-quality, accurate, and authentic exam papers. Generate a test paper based on the following input: subject, topic, number of questions, total marks, and difficulty. The test paper must strictly follow IGCSE past paper formats and guidelines. Ensure the number of questions exactly matches the user’s input, and the total marks are realistically distributed across the questions, with standard IGCSE mark allocations (1-6 marks for MCQs, 2-10 marks for structured/longer questions). Do not include any introductory text or concluding remarks. Provide only the questions, formatted as per IGCSE past papers. For MCQs, list the question followed by four answer options (A, B, C, D) on separate lines. For structured and long-answer questions, ensure they are clear, precise, and cover relevant topics with appropriate sub-parts (e.g., part (a), part (b)) if needed. Ensure all questions resemble actual IGCSE past papers in terms of difficulty, wording, and topic coverage. Do not create custom or non-standard questions. Generate a detailed mark scheme separately, following IGCSE marking criteria.";
+
+        // ... existing code ...
+        // --- Solve Doubts AI Chat Logic ---
+        const solveDoubtsBtn = document.getElementById('solveDoubtsBtn');
+        const chatModal = document.getElementById('chatModal');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+
+        const DOUBT_SOLVER_PROMPT = "You are a helpful AI tutor for IGCSE students. Answer their doubts clearly and concisely.";
+
+        // Open chat modal
+        solveDoubtsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            chatModal.classList.add('active');
+            setTimeout(() => chatInput.focus(), 200);
+        });
+
+        // Close chat modal
+        closeChatBtn.addEventListener('click', function() {
+            chatModal.classList.remove('active');
+        });
+
+        chatModal.addEventListener('click', function(e) {
+            if (e.target === chatModal) {
+                chatModal.classList.remove('active');
+            }
+        });
+
+        // Handle chat form submit
+        chatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const userMsg = chatInput.value.trim();
+            if (!userMsg) return;
+            appendChatMessage('user', userMsg);
+            chatInput.value = '';
+            chatInput.disabled = true;
+
+            // Show typing indicator
+            const typingMsg = appendChatMessage('ai', "...");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const aiResponse = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: "llama3-8b-8192",
+                        messages: [
+                            { role: "system", content: DOUBT_SOLVER_PROMPT },
+                            { role: "user", content: userMsg }
+                        ],
+                        max_tokens: 512,
+                        temperature: 0.7
+                    })
+                });
+                const data = await aiResponse.json();
+                let aiText = "Sorry, I couldn't get an answer. Please try again.";
+                if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                    aiText = data.choices[0].message.content.trim();
+                }
+                typingMsg.textContent = aiText;
+            } catch (err) {
+                typingMsg.textContent = "There was an error contacting the AI.";
+            }
+            chatInput.disabled = false;
+            chatInput.focus();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        function appendChatMessage(sender, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-message ' + sender;
+            msgDiv.textContent = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return msgDiv;
+        }
+        // Handle test form submission and AI integration for test generation
+        let generatedQuestionsText = ""; // Store generated questions for grading
+
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!studentNameInput.value.trim()) {
+                studentNameInput.focus();
+                studentNameInput.style.borderColor = "#e57373";
+                setTimeout(()=>studentNameInput.style.borderColor="#3498db", 1200);
+                return;
+            }
+            if (!validateInputs()) return;
+
+            const subject = subjectSelect.value;
+            const topic = topicSelect.value;
+            const difficulty = document.getElementById('difficulty').value;
+            const numQuestions = numQuestionsInput.value;
+            const totalMarks = totalMarksInput.value;
+            const studentName = studentNameInput.value.trim();
+
+            // Show loading
+            testPaperContent.innerHTML = "<h2 style='text-align:center;color:#3498db;'>Generating your test paper...</h2>";
+
+            // Prepare prompt for the AI
+            const userPrompt = `Subject: ${subject}\nTopic: ${topic}\nNumber of Questions: ${numQuestions}\nTotal Marks: ${totalMarks}\nDifficulty: ${difficulty}\nPlease generate an IGCSE-style test paper.`;
+
+            paperMeta.innerHTML = `Subject: <b>${subject}</b> &nbsp; | &nbsp; Topic: <b>${topic}</b> &nbsp; | &nbsp; Total Marks: <b>${totalMarks}</b> &nbsp; | &nbsp; Difficulty: <b>${difficulty}</b>`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: "llama3-8b-8192",
+                        messages: [
+                            { role: "system", content: SYSTEM_PROMPT },
+                            { role: "user", content: userPrompt }
+                        ],
+                        max_tokens: 2048,
+                        temperature: 0.7
+                    })
+                });
+                const data = await response.json();
+                let questionsText = "Sorry, could not generate questions. Please try again.";
+                if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                    questionsText = data.choices[0].message.content.trim();
+                }
+                generatedQuestionsText = questionsText; // Store for grading
+
+                // Parse questions (assumes format: "1. ...\n2. ...\n3. ...")
+                const questions = [];
+                const regex = /\d+\.\s([\s\S]*?)(?=\n\d+\.|\n*$)/g;
+                let match;
+                while ((match = regex.exec(questionsText)) !== null) {
+                    questions.push(match[1].trim());
+                }
+                // If parsing fails, fallback to showing the raw text
+                if (questions.length === 0) {
+                    testPaperContent.innerHTML = `
+                        <div class="question-block">
+                            <div class="question-title">Test Paper</div>
+                            <pre style="white-space:pre-wrap;">${questionsText}</pre>
+                        </div>
+                    `;
+                    return;
+                }
+                // Render questions and answer form
+                let formHtml = `<form id="answerForm" autocomplete="off"><div>`;
+                for (let i = 0; i < questions.length; i++) {
+                    formHtml += `
+                        <div class="question-block">
+                            <div class="question-title">Q${i+1}. ${questions[i]}</div>
+                            <textarea class="answer-area" name="answer${i+1}" required placeholder="Type your answer here..."></textarea>
+                        </div>
+                    `;
+                }
+                formHtml += `<button type="submit" class="submit-btn">Submit Answers</button></div></form>`;
+                testPaperContent.innerHTML = formHtml;
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: "smooth" });
+
+                // Handle answer submission (send to AI for grading)
+                document.getElementById('answerForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const answers = {};
+                    const formData = new FormData(e.target);
+                    formData.forEach((value, key) => {
+                        answers[key] = value.trim();
+                    });
+
+                    // Prepare prompt for grading
+                    const gradingPrompt = `Here are the student's answers:\n${JSON.stringify(answers, null, 2)}\nPlease grade these answers based on IGCSE level mark scheems Provide the marks awarded for each answer and a brief justification for why the mark was awarded or not awarded. Do not include any additional commentary or thank you notes since your response will be on a webpage therefore only respond with marks, and resoning/justification nothing else no extra stuff.`;
+
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer " + API_KEY
+                            },
+                            body: JSON.stringify({
+                                model: "llama3-8b-8192",
+                                messages: [
+                                    { role: "system", content: SYSTEM_PROMPT },
+                                    { role: "user", content: gradingPrompt }
+                                ],
+                                max_tokens: 1024,
+                                temperature: 0.5
+                            })
+                        });
+                        const data = await response.json();
+                        let gradingText = "Sorry, could not grade answers. Please try again.";
+                        if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                            gradingText = data.choices[0].message.content.trim();
+                        }
+                        testPaperContent.innerHTML = `
+                            <div class="question-block">
+                                <div class="question-title">Grading Results</div>
+                                <pre style="white-space:pre-wrap;">${gradingText}</pre>
+                            </div>
+                        `;
+                    } catch (err) {
+                        testPaperContent.innerHTML = "<h2 style='text-align:center;color:#e57373;'>Error grading answers. Please try again.</h2>";
+                    }
+                });
+            } catch (err) {
+                testPaperContent.innerHTML = "<h2 style='text-align:center;color:#e57373;'>Error generating test paper. Please try again.</h2>";
+            }
+        });
+    </script>
